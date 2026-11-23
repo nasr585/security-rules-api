@@ -1,0 +1,20 @@
+# .NET build output
+bin/
+obj/
+out/
+
+# Rider / Visual Studio / VS Code
+.idea/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local secrets and environment files
+.env
+*.local.json
+secrets.json
+
+# Test results
+TestResults/
+coverage/

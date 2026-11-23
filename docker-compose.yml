@@ -1,0 +1,36 @@
+name: security-rules-api
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${DB_SA_PASSWORD:?Set DB_SA_PASSWORD in your environment or a local .env file}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: Server=db,1433;Database=SecurityRules;User Id=sa;Password=${DB_SA_PASSWORD};TrustServerCertificate=True
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY (at least 32 characters) in your environment or a local .env file}
+      # Optional: seed a first administrator at startup.
+      AdminSeed__Email: ${ADMIN_EMAIL:-}
+      AdminSeed__Password: ${ADMIN_PASSWORD:-}
+      # Optional: SHA-256 hashes (hex, uppercase) of accepted service API keys.
+      ApiKeys__KeyHashes__0: ${API_KEY_HASH:-}
+    ports:
+      - "8080:8080"
+
+volumes:
+  sqlserver-data:

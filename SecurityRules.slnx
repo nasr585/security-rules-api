@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SecurityRules.Api/SecurityRules.Api.csproj" />
+    <Project Path="src/SecurityRules.Application/SecurityRules.Application.csproj" />
+    <Project Path="src/SecurityRules.Domain/SecurityRules.Domain.csproj" />
+    <Project Path="src/SecurityRules.Infrastructure/SecurityRules.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SecurityRules.IntegrationTests/SecurityRules.IntegrationTests.csproj" />
+    <Project Path="tests/SecurityRules.UnitTests/SecurityRules.UnitTests.csproj" />
+  </Folder>
+</Solution>
